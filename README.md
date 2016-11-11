@@ -1,6 +1,8 @@
 # react-github
 React + Redux SPA client for GitHub API
 
+[Demo](https://gaidarenko.github.io/react-github/).
+
 ## Available Scripts
 
 In the project directory, you can run:
