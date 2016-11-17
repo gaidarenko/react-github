@@ -15,7 +15,7 @@ export function fetchUserData() {
     const { name } = user;
 
     dispatch(fetchUserProfile(name));
-    dispatch(fetchUserRepositories(name));
+    dispatch(fetchUserReposPage(name, 1));
   };
 }
 
@@ -45,9 +45,9 @@ function fetchUserProfile(userName) {
       .catch(err => { toastr.error(err); });
 }
 
-function fetchUserRepositories(userName) {
+function fetchUserReposPage(userName, page) {
   return dispatch =>
-    fetch(`https://api.github.com/users/${userName}/repos`)
+    fetch(`https://api.github.com/users/${userName}/repos?page=${page}`)
       .then(response => {
 
         if (!response.ok)
@@ -56,7 +56,23 @@ function fetchUserRepositories(userName) {
         return response.json();
       })
       .then(json => {
-      	dispatch(receiveUserRepos(json));
+        
+        // In order to get all user's repos, we iterate through pages 
+        // until we get an empty array or the page number exceeds 10.
+
+        if (Array.isArray(json) && json.length > 0) {
+
+          dispatch(receiveUserRepos(json, (page > 1)));
+          /*
+          if (page > 1)
+            dispatch(receiveUserReposAdd(json));
+          else
+            dispatch(receiveUserRepos(json));*/
+
+          if (page < 10) {
+            dispatch(fetchUserReposPage(userName, page + 1));
+          }
+        }
       })
       .catch(err => { toastr.error(err); });
 }
@@ -68,10 +84,11 @@ export function receiveUserProfile(profile) {
   };
 }
 
-export function receiveUserRepos(repos)
+export function receiveUserRepos(repos, addFlag)
 {
   return {
   	type: types.RECEIVE_USER_REPOS,
   	repos,
+    addFlag,
   };
 }
