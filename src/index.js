@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import './styles/index.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../node_modules/font-awesome/css/font-awesome.css';
+import '../node_modules/toastr/build/toastr.css';
 import configureStore from './store/configureStore';
 
 const store = configureStore();

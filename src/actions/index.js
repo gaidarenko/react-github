@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import toastr from 'toastr';
 
 export function changeUserName(name) {
   return {
@@ -21,7 +22,13 @@ export function fetchUserData() {
 function fetchUserProfile(userName) {
   return dispatch =>
     fetch(`https://api.github.com/users/${userName}`)
-      .then(response => response.json())
+      .then(response => {
+
+        if (!response.ok)
+          throw new Error(response.statusText);
+
+        return response.json(); 
+      })
       .then(json => {
 
         const profile = {
@@ -35,17 +42,23 @@ function fetchUserProfile(userName) {
         
         dispatch(receiveUserProfile(profile));
       })
-      .catch(err => { throw err; });
+      .catch(err => { toastr.error(err); });
 }
 
 function fetchUserRepositories(userName) {
   return dispatch =>
     fetch(`https://api.github.com/users/${userName}/repos`)
-      .then(response => response.json())
+      .then(response => {
+
+        if (!response.ok)
+          throw new Error(response.statusText);
+
+        return response.json();
+      })
       .then(json => {
       	dispatch(receiveUserRepos(json));
       })
-      .catch(err => { throw err; });
+      .catch(err => { toastr.error(err); });
 }
 
 export function receiveUserProfile(profile) {
