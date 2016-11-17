@@ -63,11 +63,6 @@ function fetchUserReposPage(userName, page) {
         if (Array.isArray(json) && json.length > 0) {
 
           dispatch(receiveUserRepos(json, (page > 1)));
-          /*
-          if (page > 1)
-            dispatch(receiveUserReposAdd(json));
-          else
-            dispatch(receiveUserRepos(json));*/
 
           if (page < 10) {
             dispatch(fetchUserReposPage(userName, page + 1));
