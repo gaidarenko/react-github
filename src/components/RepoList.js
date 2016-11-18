@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome'
 import {Pagination} from 'react-bootstrap';
+import { setActivePage } from '../actions/index';
 
 class RepoList extends Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      activePage: 1,
-    };
-
     this.handlePageSelect = this.handlePageSelect.bind(this);
   }
 
   handlePageSelect(eventKey) {
-    this.setState({activePage: eventKey});
+    const { dispatch } = this.props;
+
+    dispatch(setActivePage(eventKey));
   }
 
   render() {
-    const { repos } = this.props;
+    const { repos, activePage } = this.props;
     const pageCount = Math.ceil(repos.length / 10);
-    const start = (this.state.activePage - 1) * 10;
+    const start = (activePage - 1) * 10;
     const reposToShow = repos.slice(start, start + 10);
 
     return (
@@ -38,7 +37,7 @@ class RepoList extends Component {
                 boundaryLinks
                 maxButtons={5}
                 items={pageCount}
-                activePage={this.state.activePage}
+                activePage={activePage}
                 onSelect={this.handlePageSelect}
               /> 
             }

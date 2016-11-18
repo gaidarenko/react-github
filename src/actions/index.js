@@ -8,6 +8,13 @@ export function changeUserName(name) {
   };
 }
 
+export function setActivePage(page) {
+  return {
+    type: types.SET_ACTIVE_PAGE,
+    activePage: page,
+  };
+}
+
 export function fetchUserData() {
   return (dispatch, getState) => {
 
@@ -61,6 +68,9 @@ function fetchUserReposPage(userName, page) {
         // until we get an empty array or the page number exceeds 10.
 
         if (Array.isArray(json) && json.length > 0) {
+
+          // Reset active pagination page to 1 if we successfully loaded new user repos
+          if (page === 1) dispatch(setActivePage(1));
 
           dispatch(receiveUserRepos(json, (page > 1)));
 
