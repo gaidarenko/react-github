@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome'
-import {Pagination} from 'react-bootstrap';
-import { setActivePage } from '../actions/index';
+import {Pagination, ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
+import { changeActivePage, sortRepos } from '../actions/index';
 
 class RepoList extends Component {
 
@@ -9,24 +9,49 @@ class RepoList extends Component {
     super(props);
 
     this.handlePageSelect = this.handlePageSelect.bind(this);
+    this.sortBy = this.sortBy.bind(this);    
   }
 
   handlePageSelect(eventKey) {
     const { dispatch } = this.props;
 
-    dispatch(setActivePage(eventKey));
+    dispatch(changeActivePage(eventKey));
+  }
+
+  sortBy(field) {
+    const { dispatch } = this.props;
+
+    dispatch(sortRepos(field));
   }
 
   render() {
-    const { repos, activePage } = this.props;
+    const { repos, activePage, sortBy } = this.props;
     const pageCount = Math.ceil(repos.length / 10);
     const start = (activePage - 1) * 10;
     const reposToShow = repos.slice(start, start + 10);
 
+   const sortByOptions = [
+      {key: 'name', text: 'Name'},
+      {key: 'stars', text: 'Stars'},
+      {key: 'forks', text: 'Forks'},
+    ];
+
     return (
       <div style={{marginTop: 30}}>
         <div className="row">
-          <div className="col-sm-offset-6 col-sm-6 text-right">
+
+          <div className="col-sm-1" style={{marginTop: 19}}>
+            <ButtonToolbar>
+              <DropdownButton bsSize="small" title={`Sort By: ${sortBy}`} id="sort-by-dropdown">
+                {
+                  sortByOptions.map(item => <MenuItem key={item.key} onClick={() => this.sortBy(item.key)}
+                      active={sortBy === item.key}>{item.text}</MenuItem>)
+                }
+              </DropdownButton>
+            </ButtonToolbar>
+          </div>
+
+          <div className="col-sm-offset-5 col-sm-6 text-right">
             {
               <Pagination
                 style={repos.length > 10 ? {} : {display: "none"}}

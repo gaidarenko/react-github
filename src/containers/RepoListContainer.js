@@ -10,11 +10,12 @@ class RepoListContainer extends Component {
 
 function mapStateToProps(state) {
   const { repositories } = state;
-  const { repos, activePage } = repositories;
+  const { repos, activePage, sortBy } = repositories;
 
   return {
   	repos,
   	activePage,
+  	sortBy,
   };
 }
 

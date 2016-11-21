@@ -20,7 +20,7 @@ class Search extends Component {
 
   render() {
   	const { name, dispatch } = this.props;
-
+        
     return (
       <div className="row">
         <div className="col-sm-4 text-left" style={{marginTop: 20}}>

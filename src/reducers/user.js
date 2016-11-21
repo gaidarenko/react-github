@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-	name: "gaidarenko",
+	name: "microsoft",
 };
 
 export default function user(state = initialState, action) {
