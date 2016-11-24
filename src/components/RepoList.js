@@ -79,7 +79,7 @@ class RepoList extends Component {
   renderRepo(repo) {
     return (
       <div className="repo-row" key={repo.id}>
-        <h4 className="text-primary">{repo.name}</h4>
+        <a href={`#/${repo.owner.login}/${repo.name}`}><h4 className="text-primary">{repo.name}</h4></a>
         <p>{repo.description}</p>
         <p>
           <span className="label label-success">{repo.language}</span>

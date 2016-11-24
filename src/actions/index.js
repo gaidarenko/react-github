@@ -22,6 +22,30 @@ export function changeActivePage(page) {
   };
 }
 
+export function changePath(path) {
+  return {
+    type: types.CHANGE_PATH,
+    path,
+  };
+}
+
+export function fetchIssues(repo) {
+  return dispatch => 
+    fetch(`https://api.github.com/repos/${repo}/issues?state=open`)
+      .then(response => {
+
+        if (!response.ok)
+          throw new Error(response.statusText);
+
+        return response.json(); 
+      })
+      .then(json => {
+        console.log(JSON.stringify(json));
+        dispatch(receiveIssues(json));
+      })
+      .catch(err => { toastr.error(err); });
+}
+
 export function sortRepos(field) {
   return (dispatch, getState) => {
     const { repositories } = getState();
@@ -120,6 +144,13 @@ export function receiveUserProfile(profile) {
   return {
   	type: types.RECEIVE_USER_PROFILE,
   	profile,
+  };
+}
+
+export function receiveIssues(issues) {
+  return {
+    type: types.RECEIVE_ISSUES,
+    issues,
   };
 }
 
