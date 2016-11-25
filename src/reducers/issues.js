@@ -7,7 +7,6 @@ const initialState = {
 export default function repositories(state = initialState, action) {
 	switch (action.type) {
       case types.RECEIVE_ISSUES:
-        console.log(JSON.stringify(action.issues));
         return Object.assign({}, state, { list: action.issues });
 
       default:

@@ -40,8 +40,9 @@ export function fetchIssues(repo) {
         return response.json(); 
       })
       .then(json => {
-        console.log(JSON.stringify(json));
-        dispatch(receiveIssues(json));
+        // Remove "pull_requests" from issues
+        const issues = json.filter(issue => !issue.pull_request);
+        dispatch(receiveIssues(issues));
       })
       .catch(err => { toastr.error(err); });
 }

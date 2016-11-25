@@ -21,6 +21,8 @@ class App extends Component {
     dispatch(fetchUserData());
 
     window.addEventListener("hashchange", this.onHashChange, false);
+
+    dispatch(changePath(window.location.hash));
   }
 
   componentWillUnmount() {
