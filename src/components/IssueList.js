@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { fetchIssues } from '../actions/index';
+import marked from 'marked';
 
 class IssueList extends Component {
   
@@ -47,23 +48,43 @@ class IssueList extends Component {
       style["color"] = this.getColor(label.color);
     }
 
-    console.log(JSON.stringify(style));
-
     return (
       <span className="label label-success" key={label.id} style={style}>{label.name}</span>
     );
   }
 
+  createMarkdown(markdown) {
+    return {__html: marked(markdown)};
+  }
+/*
   renderIssue(issue) {
     return (
       <div key={issue.id} style={{marginTop: 30}}>
         <h4 style={{display: "inline-block"}}>{issue.title}</h4>
         { issue.labels.map(label => this.renderLabel(label)) }        
-        <p>{issue.body}</p>
-
+        <div dangerouslySetInnerHTML={this.createMarkdown(issue.body)} /> 
       </div>
     );
-  }
+  }*/
+
+  renderIssue(issue) {
+    const id = `issue_${issue.id}`;
+    const href = `#${id}`;
+
+    return (
+      <div key={issue.id} style={{marginTop: 30}}>
+        <a data-toggle="collapse" href={href}>
+          <h4 style={{display: "inline-block"}}>{issue.title}</h4>
+        </a>
+
+        { issue.labels.map(label => this.renderLabel(label)) }  
+
+        <div class="collapse" id={id}>      
+          <div dangerouslySetInnerHTML={this.createMarkdown(issue.body)} /> 
+        </div>
+      </div>
+    );
+  }  
 }
 
 export default IssueList;
