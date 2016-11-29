@@ -6,11 +6,24 @@ class IssueList extends Component {
   
   constructor(props) {
     super(props);
+
+    this.state = {
+      showIssueId: 0,
+    };
+
+    this.changeVisibleIssue = this.changeVisibleIssue.bind(this);
   }
 
   componentDidMount() {
     const { dispatch, repo } = this.props;
     dispatch(fetchIssues(repo));
+  }
+
+  changeVisibleIssue(id) {
+    if (this.state.showIssueId === id)
+      this.setState({showIssueId: 0});
+    else
+      this.setState({showIssueId: id});
   }
 
   render() {
@@ -56,32 +69,16 @@ class IssueList extends Component {
   createMarkdown(markdown) {
     return {__html: marked(markdown)};
   }
-/*
-  renderIssue(issue) {
-    return (
-      <div key={issue.id} style={{marginTop: 30}}>
-        <h4 style={{display: "inline-block"}}>{issue.title}</h4>
-        { issue.labels.map(label => this.renderLabel(label)) }        
-        <div dangerouslySetInnerHTML={this.createMarkdown(issue.body)} /> 
-      </div>
-    );
-  }*/
 
   renderIssue(issue) {
-    const id = `issue_${issue.id}`;
-    const href = `#${id}`;
 
     return (
       <div key={issue.id} style={{marginTop: 30}}>
-        <a data-toggle="collapse" href={href}>
-          <h4 style={{display: "inline-block"}}>{issue.title}</h4>
-        </a>
+        <h4 style={{display: "inline-block", cursor: "pointer", }} onClick={() => this.changeVisibleIssue(issue.id)}>{issue.title}</h4>
 
         { issue.labels.map(label => this.renderLabel(label)) }  
 
-        <div class="collapse" id={id}>      
-          <div dangerouslySetInnerHTML={this.createMarkdown(issue.body)} /> 
-        </div>
+        <div style={this.state.showIssueId !== issue.id ? {display: "none"} : {}} dangerouslySetInnerHTML={this.createMarkdown(issue.body)} /> 
       </div>
     );
   }  

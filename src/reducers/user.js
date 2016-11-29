@@ -1,7 +1,7 @@
 import * as types from '../constants/ActionTypes';
 
 const initialState = {
-	name: "microsoft",
+	name: "stylelint",
 };
 
 export default function user(state = initialState, action) {

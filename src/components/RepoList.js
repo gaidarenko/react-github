@@ -40,7 +40,7 @@ class RepoList extends Component {
       <div style={{marginTop: 30}}>
         <div className="row">
 
-          <div className="col-sm-1" style={{marginTop: 19}}>
+          <div className="col-sm-1" style={{marginTop: 19, marginBottom: 30,}}>
             <ButtonToolbar>
               <DropdownButton bsSize="small" title={`Sort By: ${sortBy}`} id="sort-by-dropdown">
                 {

@@ -121,7 +121,7 @@ function fetchUserReposPage(userName, page) {
       .then(json => {
         
         // In order to get all user's repos, we iterate through pages 
-        // until we get an empty array or the page number exceeds 10.
+        // until we get an empty array or the page number exceeds 40.
 
         if (Array.isArray(json) && json.length > 0) {
 
@@ -136,6 +136,10 @@ function fetchUserReposPage(userName, page) {
           if (page < 40) {
             dispatch(fetchUserReposPage(userName, page + 1));
           }
+        }
+        else {
+          // Array is empty. This means no more data. So sort repos list by popularity.
+          dispatch(sortRepos("stars"));
         }
       })
       .catch(err => { toastr.error(err); });
